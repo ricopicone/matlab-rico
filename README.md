@@ -1,6 +1,6 @@
 # matlab-rico
 
-Matlab Library by Rico Picone, PhD.
+Matlab library by Rico Picone, PhD.
 
 ## Introduction
 
