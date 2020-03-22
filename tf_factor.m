@@ -27,6 +27,10 @@ function out = tf_factor(sys)
 %   
 %   See also TF, STACK.
 
+if ~isa(sys,'tf')
+  sys = tf(sys);
+end
+
 % extract poles and zeros
 poles=pole(sys);
 zeros=zero(sys);
@@ -37,9 +41,13 @@ zeros_cplx = cplxpair(zeros);
 
 % loop through and extract sub-tfs into model array, each in standard form, keeping track of the gain
 F = stack(1,tf(1,1)); % init model array
-F_gain = sys.Num{:}(...
+num_gain = sys.Num{:}(...
   find(cell2mat(sys.Num),1,'first')...
-); % overall gain of stack
+); % gain of numerator
+den_gain = sys.Den{:}(...
+  find(cell2mat(sys.Den),1,'first')...
+); % gain of denominator
+F_gain = num_gain/den_gain;
 F_gain_o = F_gain ; % original gain
 k=1;
 jskip=0;
@@ -84,9 +92,10 @@ tf_composite = 1;
 for j=1:k
   tf_composite = tf_composite*F(:,:,j);
 end
-
+num_gain = sys.Num{:}(find(cell2mat(tf_composite.Num),1,'first'));
+den_gain = sys.Den{:}(find(cell2mat(tf_composite.Den),1,'first'));
 if (... % check that the factorization is correct
-  isequal(sys.Num{:}(find(cell2mat(tf_composite.Num),1,'first')),F_gain_o) && ... % gain
+  isequal(num_gain/den_gain,F_gain_o) && ... % gain
   round(sum(poles),5) == round(sum(pole(tf_composite)),5) && ... % poles ... not perfect
   round(sum(zeros),5) == round(sum(zero(tf_composite)),5) ... % zeros ... not perfect
 )
