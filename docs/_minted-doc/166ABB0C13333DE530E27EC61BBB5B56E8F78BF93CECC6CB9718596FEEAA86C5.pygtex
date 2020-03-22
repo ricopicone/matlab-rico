@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+sys\PYGZus{}a(:,:,1,1) =
+
+          3.155
+  \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+  s\PYGZca{}2 \PYGZhy{} 0.3399 s + 3.155
+
+
+sys\PYGZus{}a(:,:,2,1) =
+
+    6.34
+  \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+  s + 6.34
+
+
+sys\PYGZus{}a(:,:,3,1) =
+
+  s\PYGZca{}2 + 0.6 s + 1
+
+
+sys\PYGZus{}a(:,:,4,1) =
+
+  0.25
+
+4x1 array of continuous\PYGZhy{}time transfer functions.
+\end{Verbatim}

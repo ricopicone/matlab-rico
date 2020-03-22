@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZpc{}\PYGZpc{}file ../tf2latex.m}
+
+\PYG{k}{function}\PYG{+w}{ }out \PYG{p}{=}\PYG{+w}{ }\PYG{n+nf}{tf2latex}\PYG{p}{(}sys\PYG{p}{)}
+\PYG{c}{\PYGZpc{} TF2LATEX  converts tf model to LaTeX code}
+\PYG{c}{\PYGZpc{}   TEXT = TF2LATEX(SYS) converts the}
+\PYG{c}{\PYGZpc{}   tf model SYS to LaTeX text.}
+\PYG{c}{\PYGZpc{}   Dependencies:}
+\PYG{c}{\PYGZpc{}     \PYGZhy{} toolboxes}
+\PYG{c}{\PYGZpc{}       \PYGZhy{} Control Systems}
+\PYG{c}{\PYGZpc{}       \PYGZhy{} Symbolic}
+
+\PYG{n}{syms} \PYG{n}{s}
+
+\PYG{n}{num} \PYG{p}{=} \PYG{n}{sys}\PYG{p}{.}\PYG{n}{Numerator}\PYG{p}{;}
+\PYG{n}{den} \PYG{p}{=} \PYG{n}{sys}\PYG{p}{.}\PYG{n}{Denominator}\PYG{p}{;}
+
+\PYG{n}{out} \PYG{p}{=} \PYG{n}{latex}\PYG{p}{(}\PYG{c}{...}
+  \PYG{n}{poly2sym}\PYG{p}{(}\PYG{c}{...}
+    \PYG{n}{cell2mat}\PYG{p}{(}\PYG{n}{num}\PYG{p}{),}\PYG{c}{...}
+    \PYG{n}{s}\PYG{c}{...}
+  \PYG{p}{)}\PYG{o}{/}\PYG{c}{...}
+  \PYG{n}{poly2sym}\PYG{p}{(}\PYG{c}{...}
+    \PYG{n}{cell2mat}\PYG{p}{(}\PYG{n}{den}\PYG{p}{),}\PYG{c}{...}
+    \PYG{n}{s}\PYG{c}{...}
+  \PYG{p}{)}\PYG{c}{...}
+\PYG{p}{);}
+\end{Verbatim}

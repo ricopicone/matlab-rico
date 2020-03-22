@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZpc{}\PYGZpc{}file ../zero.m}
+\PYG{k}{function}\PYG{+w}{ }out \PYG{p}{=}\PYG{+w}{ }\PYG{n+nf}{zero}\PYG{p}{(}sys\PYG{p}{)}
+
+\PYG{n}{out} \PYG{p}{=} \PYG{n}{roots}\PYG{p}{(}\PYG{n}{cell2mat}\PYG{p}{(}\PYG{n}{sys}\PYG{p}{.}\PYG{n}{Num}\PYG{p}{));}
+\end{Verbatim}

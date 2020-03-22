@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+sys =
+
+    5 s\PYGZca{}2 + 3 s + 5
+  \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}
+  s\PYGZca{}3 + 6 s\PYGZca{}2 + s + 20
+
+Continuous\PYGZhy{}time transfer function.
+\end{Verbatim}

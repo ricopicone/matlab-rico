@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZpc{} [f,ax\PYGZus{}mag,ax\PYGZus{}phase] = bode\PYGZus{}multi(G); \PYGZpc{} get axis handles}
+\PYG{n}{f} \PYG{p}{=} \PYG{n}{bode\PYGZus{}multi}\PYG{p}{(}\PYG{n}{sys\PYGZus{}a}\PYG{p}{);}
+
+\PYG{n}{hgsave}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}figures/temp\PYGZsq{}}\PYG{p}{);}
+\end{Verbatim}

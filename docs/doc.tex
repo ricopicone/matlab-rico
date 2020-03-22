@@ -1,0 +1,27 @@
+% !TEX options=--shell-escape
+\documentclass[11pt,article]{memoir}
+
+\usepackage{doc}
+
+\begin{document}
+
+\include{front_matter}
+
+%%% Body -------------------------
+
+\input{_source_and_docs.tex}
+% \clearpage
+
+% \part{Appendices}
+% \appendix
+% \renewcommand*\thesection{\Alph{chapter}.\ifnum\value{section}<10 0\fi\arabic{section}}
+% \renewcommand*\thechapter{\Alph{chapter}}
+% \subfile{ap_01}
+% \subfile{ap_02}
+% \subfile{ap_03}
+
+% \nocite{*} % include all from bib, regardless of inline citation command's presence
+% \bibliographystyle{plainnat}
+% \bibliography{doc}
+
+\end{document}

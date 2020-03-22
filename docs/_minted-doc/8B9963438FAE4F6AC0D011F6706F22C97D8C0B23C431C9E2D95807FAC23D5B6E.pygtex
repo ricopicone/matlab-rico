@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{sys\PYGZus{}a} \PYG{p}{=} \PYG{n}{tf\PYGZus{}factor}\PYG{p}{(}\PYG{n}{sys}\PYG{p}{)}
+\end{Verbatim}

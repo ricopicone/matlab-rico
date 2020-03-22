@@ -1,0 +1,1474 @@
+\ProvidesPackage{doc}
+
+%- fonts, etc.
+
+\usepackage[scaled=.92]{helvet}
+%\usepackage[urw-garamond]{mathdesign}
+%\usepackage[osf,sc]{mathpazo}
+\usepackage{palatino}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{eucal}  % nice mathcal fonts
+\usepackage[small,euler-digits]{eulervm} % Works well with garamond at "small" size
+%\usepackage{yfonts}
+\usepackage{amsmath,amssymb}
+\usepackage{tensor}
+\usepackage{bm} % bm is better than amsmath boldsymbol according to the internet
+%\usepackage{mathabx}
+\usepackage{array} % for better arrays (eg matrices) in maths
+\newcommand{\ty}[1]{\texttt{#1}} % short typewriter macro
+
+
+%- color
+
+\usepackage{xcolor}
+\definecolor{lightgray}{gray}{0.9}
+\definecolor{mylightgrey}{cmyk}{0,0,0,0.1}
+\definecolor{myfunblue}{cmyk}{1,.2,.1,.2}
+\definecolor{myfungrey}{cmyk}{.05,.05,.01,.01}
+\definecolor{mygreen}{cmyk}{1,0,1,0.39}
+\definecolor{mydarkgrey}{cmyk}{.05,.05,.05,.85}
+
+%- attach files
+
+\definecolor{attachfilecolor}{cmyk}{.1,.2,.3,.4}
+\usepackage{attachfile2}
+\attachfilesetup{color=attachfilecolor}
+
+%- python code with minted
+
+\usepackage{minted}
+% \AfterEndPreamble{\def\PYGfriendlyZsq{\textquotesingle}}
+\setminted{fontsize=\small,frame=single,framerule=.5pt,framesep=4pt,tabsize=2}
+\setminted[text]{frame=leftline,framerule=0.5pt,rulecolor=\color{gray},framesep=4pt}
+
+%-- this makes the mintinlines match the current font size
+
+\makeatletter
+\newcommand{\currentfontsize}{\fontsize{\f@size}{\f@baselineskip}\selectfont}
+\makeatother
+\setmintedinline{fontsize=\currentfontsize}
+
+%-- define shortened inline macros
+
+\newmintinline[mc]{c}{}
+\newmintinline[ml]{latex}{}
+\newmintinline[mm]{matlab}{}
+%- fix for bug in minted with spacing with colorbg, see https://tex.stackexchange.com/questions/228058/how-to-space-before-and-after-a-minted-code-block-with-bgcolor
+\makeatletter
+\patchcmd{\minted@colorbg}{\noindent}{\medskip\noindent}{}{}
+\apptocmd{\endminted@colorbg}{\par\medskip}{}{}
+\makeatother
+\newcommand{\mcwe}[1]{{\bfseries\color{mygreen}\mc{#1}}}
+
+%- pseudocode
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algrenewcommand{\algorithmiccomment}[1]{\hfill {\color{gray}$\triangleright$ \itshape #1}}
+
+%- subfiles
+
+\usepackage{subfiles} % build files separately and together
+\newcommand{\onlyinsubfile}[1]{#1}
+\newcommand{\notinsubfile}[1]{}
+
+%- general
+\usepackage[edges]{forest} % hierarchical outline
+\usepackage{menukeys} % nice keys and menu typography
+\usepackage{adjustbox} % use for centered too-wide graphics and tables
+\usepackage[round]{natbib} % bibliography
+\AtBeginDocument{ % numbered bibliography
+  \renewcommand{\bibsection}{\section{\bibname}}
+}
+\usepackage{siunitx} % should use for SI units
+%\usepackage{showframe}
+% \usepackage{ltablex}
+\usepackage{tabularx} % adjustable-width tables
+\usepackage{ifthen} % logic structures
+\usepackage{lipsum} % latin filler text
+\usepackage{enumitem} % nicer lists
+\setlist{noitemsep} % or \setlist{nolistsep} to remove space around whole list
+\newlist{enumerate_check}{enumerate}{3}
+\setlist[enumerate_check,1]{label={$\square$ \arabic*.}}
+\setlist[enumerate_check,2]{label={$\square$ \alph*.}}
+\setlist[enumerate_check,3]{label={$\square$ \roman*.}}
+\setcounter{tocdepth}{3} % Print the chapter and sections to the toc
+% \def\bibpreamble{\protect\addcontentsline{toc}{chapter}{Bibliography}}
+\usepackage{multirow} % for tabulars
+\usepackage{cprotect}
+\usepackage{listings} % legacy
+\usepackage{pgffor}
+\usepackage{lscape}
+\usepackage{verbatim} % adds environment for commenting out blocks of text for better verbatim
+\usepackage{colortbl}
+\usepackage[super]{nth}
+\counterwithout{section}{chapter} % skip chapters memoir
+\makeatletter % this is so the toc is a section
+\renewcommand\@tocmaketitle{%
+  \section*{\contentsname}
+  \tocmark%
+  \@afterheading}
+\makeatother
+
+%- tables
+
+\usepackage{booktabs} % for much better looking tables
+\usepackage{longtable}
+
+%- TiKZ, pgfplots, standalone
+
+\usepackage{pgfplots}
+\usepackage{tikz-cd}
+\usepackage{etex}
+% \usepackage[subpreambles,mode=image]{standalone}%,mode=buildnew
+\usepackage{xstring}
+\usepgfplotslibrary{fillbetween}
+\usepackage{marvosym}
+%\usepackage[abspath]{currfile}
+%\newcommand{\includestandalonewithpath}[2][]{%
+% \begingroup%
+% \StrCount{#2}{/}[\matches]%
+% \StrBefore[\matches]{#2}{/}[\datapath]%
+% \includestandalone[#1]{#2}%
+% \endgroup%
+%}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+\usepackage{tikzsymbols}
+\usepackage{etoolbox}
+
+%-- expand memory
+
+% \usepgfplotslibrary{external} 
+% \tikzexternalize
+
+%-- calcLength macro
+
+\makeatletter
+\def\calcLength(#1,#2)#3{%
+\pgfpointdiff{\pgfpointanchor{#1}{center}}%
+             {\pgfpointanchor{#2}{center}}%
+\pgf@xa=\pgf@x%
+\pgf@ya=\pgf@y%
+\FPeval\@temp@a{\pgfmath@tonumber{\pgf@xa}}%
+\FPeval\@temp@b{\pgfmath@tonumber{\pgf@ya}}%
+\FPeval\@temp@sum{(\@temp@a*\@temp@a+\@temp@b*\@temp@b)}%
+\FProot{\FPMathLen}{\@temp@sum}{2}%
+\FPround\FPMathLen\FPMathLen5\relax
+\global\expandafter\edef\csname #3\endcsname{\FPMathLen}
+}
+\makeatother
+
+%- geometry 
+
+%\usepackage{geometry} % to change the page dimensions
+%%\geometry{letterpaper,left=1in,right=1in,top=1in,bottom=1in} 
+%\geometry{letterpaper,includeheadfoot,left=.5in,right=.5in,top=.25in,bottom=.4in,headsep=.125in,footskip=.125in} 
+%%\usepackage[export]{adjustbox}
+%\usepackage{setspace}
+%%\usepackage{showframe}
+
+%- calc
+
+\usepackage{calc}
+  \newlength\bwidth
+  \newlength\bheight
+%\usepackage{multicol}
+%\usepackage{changepage}
+
+%- figures
+
+\usepackage{graphicx}
+%\usepackage[tight]{subfigure} % make it possible to include more than one captioned figure/table in a single float
+% \usepackage{caption}
+% \captionsetup{font={stretch=1}}  %% this affects both figure and table
+% \usepackage{subfig}
+\usepackage{float} % gives H placement option
+
+%- captions and more figures
+
+\captionnamefont{\small\sffamily\bfseries}
+\captiontitlefont{\small\sffamily\selectfont}
+\subcaptionsize{\footnotesize}
+\subcaptionlabelfont{\sffamily}
+\subcaptionfont{\sffamily}
+
+\newsubfloat{figure}% Allow subfloats in figure environment
+
+% \usepackage{caption}
+% \captionsetup[figure]{labelfont={bf,footnotesize},textfont={footnotesize}}
+% \captionsetup[subfloat]{labelfont={footnotesize},textfont={footnotesize}}
+
+%-- this is a hack for using vector pdfs instead of pngs from jupyter notebooks converted to tex ... but it makes it so pngs don't work, which is annoying af
+
+\DeclareGraphicsRule{.tif}{png}{.png}{
+  `convert #1 `dirname #1`/`basename #1 .tif`.png
+}
+
+
+%- title appearance
+
+%\usepackage{sectsty}
+%\allsectionsfont{\sffamily\fontseries{sbc}\selectfont\upshape}
+%\allsectionsfont{\sffamily\large}
+
+%- theorem
+\usepackage{amsthm}
+\usepackage{thmtools}
+\definecolor{boxcolor}{rgb}{.1,.6,.1}
+\definecolor{boxbgcolor}{rgb}{.9,1,.9}
+\definecolor{boxcolor2}{rgb}{.6,.6,.1}
+\definecolor{boxbgcolor2}{rgb}{1,1,.9}
+\declaretheoremstyle[
+  bodyfont=\normalfont
+]{mystyle}
+\declaretheoremstyle[
+  bodyfont=\normalfont,
+  headfont=\normalfont\itshape
+]{myremark}
+\declaretheorem[
+  style=myremark,
+  shaded={bgcolor=boxbgcolor,rulecolor=boxcolor,rulewidth=0pt},
+  within=section]{remark}
+\declaretheorem[
+  style=mystyle,
+%  thmbox={style=S,bodystyle=\normalfont},
+  shaded={bgcolor=boxbgcolor,rulecolor=boxcolor,rulewidth=2pt},
+  name=Definition,
+  within=chapter
+]{definition}
+\declaretheorem[
+  style=mystyle,
+%  thmbox={style=L,bodystyle=\normalfont},
+  shaded={bgcolor=boxbgcolor2,rulecolor=boxcolor2,rulewidth=2pt},
+  name=Proposition,
+  within=chapter
+]{proposition}
+\declaretheorem[
+  style=mystyle,
+%  thmbox={style=L,bodystyle=\normalfont},
+  shaded={bgcolor=boxbgcolor2,rulecolor=boxcolor2,rulewidth=2pt},
+  name=Theorem,
+  within=chapter
+]{theorem}
+%% fix indentation in thmbox
+\makeatletter
+\patchcmd\thmt@parsetheoremargs
+  {\let\@parsecmd\@empty}
+  {\let\@parsecmd\ignorespaces}
+  {}{}
+\makeatother
+
+%\theoremstyle{plain}
+%\newtheorem{proposition}{Proposition}
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\theoremstyle{remark}
+%\newtheorem{remark}{Remark}
+\newcommand{\newevenside}{
+  \ifthenelse{\isodd{\thepage}}{\newpage}{
+    \newpage
+    \phantom{placeholder} % doesn't appear on page
+    \thispagestyle{empty} % if want no header/footer
+    \newpage
+  }
+}
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}{\sffamily\bfseries #1}}
+
+%- headers and footers
+
+\usepackage{nameref}
+\makeatletter
+\newcommand*{\currentname}{\@currentlabelname}
+\makeatother
+%\usepackage{fancyhdr,lastpage} % This should be set AFTER setting up the page geometry
+%%\pagestyle{fancy} % options: empty , plain , fancy
+%\fancypagestyle{fancy1}{%
+% \renewcommand{\headrulewidth}{0pt} % customise the layout...
+% \lhead{}\chead{}\rhead{}
+% \lfoot{}\cfoot{}\rfoot{\thepage{} of \pageref{LastPage}}
+%}%
+%\fancypagestyle{fancy2}{%
+% \renewcommand{\headrulewidth}{0pt} % customise the layout...
+% \lhead{}\chead{}\rhead{\S\slshape\nouppercase\leftmark}
+% \lfoot{}\cfoot{}\rfoot{\thepage{} of \pageref{LastPage}}
+%}%
+%\pagestyle{fancy2}
+
+%- hyperlinks
+
+\usepackage{hyperref}
+\hypersetup{
+  unicode=false,                % non-Latin characters in Acrobat
+  colorlinks=true,              % false: boxed links; true: colored links
+  linkcolor=hyperrefLinkColor,  % color of internal links
+  citecolor=hyperrefCiteColor,  % color of links to bibliography
+  filecolor=blue,               % color of file links
+  urlcolor=hyperrefURLColor     % color of external links
+}          
+\definecolor{hyperrefLinkColor}{rgb}{0,0.35,0}
+\definecolor{hyperrefCiteColor}{rgb}{0.35,0,0.35}
+\definecolor{hyperrefURLColor}{rgb}{0,0,0.35}
+\usepackage[all]{hypcap} % makes hyperlinks to figs and tables go to top of float instead of caption
+
+%- references
+
+\usepackage[noabbrev,capitalise,nameinlink]{cleveref}      % reference object types automatically
+% \newcommand{\crefrangeconjunction}{--} % instead of "to"
+\crefname{resource}{Resource}{Resources}
+\creflabelformat{resource}{#2#1#3}
+\crefname{resource:sub}{Resource}{Resources}
+\creflabelformat{resource:sub}{#2#1#3}
+\crefname{lab_exercise}{Lab Exercise}{Lab Exercises}
+\crefname{equation}{Equation}{Equations}
+\creflabelformat{equation}{#2#1#3}
+\usepackage{xstring}
+\creflabelformat{lab_exercise}{#2\StrBefore{#1}{.}#3}
+\crefname{question}{Exercise}{Exercises}
+\creflabelformat{question}{#2#1#3}
+\crefname{subsection}{}{}
+\crefname{subsubsection}{}{}
+% \creflabelformat{lab:sub}{#2#1#3}
+% \crefname{lab:sub}{Lab}{Lab Exercises}
+\def\chapterautorefname{Chapter}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{}
+\def\subsubsectionautorefname{}
+\def\infoboxautorefname{Box}
+\def\myexampleautorefname{Example}
+\def\eqboxautorefname{Equation}
+\def\eqboxiautorefname{Equation}
+\def\eqboxtwoautorefname{Equation}
+\def\eqboxtwoiautorefname{Equation}
+\def\subfloatautorefname{Figure}
+\def\definitionautorefname{Definition}
+%\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} (\nameref*{#1})}}
+%\newcommand*{\numnameref}[1]{\hyperref[{#1}]{\ref*{#1} (\nameref*{#1})}}
+\pdfstringdefDisableCommands{%
+  \let\enspace\empty  % this causes the warning for \kern
+  \let\noindent\empty % this causes the warning for \indent
+}
+
+%- epigraph
+
+\usepackage{epigraph}
+
+%- url
+
+\usepackage{url}
+\renewcommand{\UrlFont}{\ttfamily\small}
+
+%- date/time
+
+\usepackage{datetime}
+\definecolor{mylightgrey}{cmyk}{0,0,0,0.1}
+\newdateformat{mydate}{\twodigit{\THEDAY}\ \monthname[\THEMONTH] \THEYEAR}
+\settimeformat{hhmmsstime}
+
+%- math (more)
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\usepackage{steinmetz} % complex number notation, phasors?
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\adj}{adj}
+
+%-- vert
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+%- boxes and theorems
+
+\usepackage[skins,breakable]{tcolorbox}
+\tcbset{colback=white}
+\tcbuselibrary{minted}
+\tcbuselibrary{theorems}
+\lstset{
+    numbers=left,
+    breaklines=true,
+    backgroundcolor=\color{myfungrey},
+    tabsize=2,
+    language=Mathematica,
+    basicstyle=\small\ttfamily, % print whole listing small
+    keywordstyle=\color{myfunblue},
+    numberstyle=\ttfamily,
+}
+
+%- redaction
+
+\usepackage{censor} % redact
+\usepackage{stackengine} % stacking characters
+\usepackage{scalerel} % scale objects
+\censorruleheight=0ex
+\makeatletter
+\long\def\blackout#1{%
+  \def~{-}%
+  \protected@edef\save@arg{#1}%
+  \expandafter\censor@Block\save@arg\stringend\let~\sv@tilde}
+\let\sv@cenword\@cenword
+\newcommand\m@cenword[1]{\ThisStyle{%
+  \stackengine{\mcensorruledepth}{$\SavedStyle\phantom{#1}$}%
+    {\rule{\widthof{$\SavedStyle#1$}}{\the\censorruleheight}}{U}{c}{F}{T}{L}}}
+\newcommand\mblackout[2][\dp\strutbox]{%
+  \let\@cenword\m@cenword%
+  \def\mcensorruledepth{#1}%
+  \blackout{{#2}}%
+  \let\@cenword\sv@cenword%
+}
+
+% zero padding chapters and sections
+% \makeatletter
+% \let\latex@@thechapter\thechapter
+% \newcommand{\padwithzero}{%
+%   0%
+% }%
+% \renewcommand{\thechapter}{\ifnum\c@chapter<10\relax\padwithzero\fi\latex@@thechapter}\makeatletter
+% \makeatletter
+% \let\latex@@thesection\thesection
+% \newcommand{\padwithzero}{%
+%   0%
+% }%
+% \renewcommand{\thesection}{\ifnum\c@section<10\relax\padwithzero\fi\latex@@thesection}
+
+%- chapter and section zero padding
+
+% \renewcommand*\thesection{\ifnum\value{chapter}<10 0\fi\arabic{chapter}.\ifnum\value{section}<10 0\fi\arabic{section}}
+% \renewcommand*\thechapter{\ifnum\value{chapter}<10 0\fi\arabic{chapter}}
+% \usepackage{alphalph} % for more than 26 appendices
+
+%- section pagination and title
+
+% \usepackage{titlesec}
+% \titleformat{\section}{\Large\sffamily\bfseries}{Lecture \thesection}{1em}{}
+% % the following is for formatting the chapter problems and solutions
+% \newcommand{\problems}{%
+% 	\titleformat{\section}{\Large\sffamily\bfseries}{\thesection}{1em}{}%
+% 	\section{Problems for Chapter \thechapter}
+% 	\titleformat{\section}{\Large\sffamily\bfseries}{Lecture \thesection}{1em}{}%
+% }%
+% \newcommand{\solutions}[1]{%
+% 	\titleformat{\section}{\Large\sffamily\bfseries}{\thesection}{1em}{}%
+% 	\ifdefined\ispartial
+% 	\else
+% 		\section{Solutions for Chapter \thechapter{} Problems}
+% 		#1%
+% 	\fi
+% 	\titleformat{\section}{\Large\sffamily\bfseries}{Lecture \thesection}{1em}{}%
+% }%
+
+% % \makeatletter
+%   \makeatother
+%   % for new page for each section
+%   % \newcommand{\sectionbreak}{\clearpage} % this causes weirdness with my page numbering at the end ... at least when there are floats
+%   \let\stdsection\section
+%   \renewcommand\section{\newpage\stdsection}
+%   % page numbering per section
+%   \numberwithin{page}{section}% Number page by section
+%   \renewcommand{\thepage}{\thesection\,\texorpdfstring{\raise0.18ex\hbox{$\ni$}}{}\,\texorpdfstring{\kern1.75pt}{}\the\numexpr\value{page}+1\relax}
+%   \makeatletter
+% % \makeatother
+
+% \let\stdsection\section
+%   \renewcommand\section{\stdsection\set}
+
+% \makeatletter
+% \renewcommand\section{\@startsection {section}{1}{\z@}%
+%                                    {-3.5ex \@plus -1ex \@minus -.2ex}%
+%                                    {2.3ex \@plus.2ex}%
+%                                    {\normalfont\Large\bfseries}}
+% \makeatother
+
+%-- new counter for pages of section
+% \newcounter{sectionpagecounter}
+% \newcommand{\resetsectionpagecount}{\setcounter{sectionpagecounter}{0}}
+
+% \makeatletter
+% \patchcmd\@outputpage{\stepcounter{page}}{\stepcounter{page}\stepcounter{sectionpagecounter}}{}{} % inc for every page
+% \patchcmd{\@xsect}{\ignorespaces}{\resetsectionpagecount}{}{} % reset on new section
+% \pretocmd{\section}{\clearpage\resetsectionpagecount}{}{}
+% \makeatother
+
+
+%-- more boxes
+
+\usepackage[framemethod=TikZ]{mdframed}
+	\mdfsetup{%
+		innertopmargin=0\baselineskip,
+		innerbottommargin=1\baselineskip
+	}
+
+\newcounter{infobox}[chapter]
+\renewcommand{\theinfobox}{\thechapter.\arabic{infobox}}
+\newenvironment{infobox}[1][]{%
+	\refstepcounter{infobox}
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,title={Box \theinfobox\quad #1},colframe=mygreen,colback=white]%
+}{%
+    \end{tcolorbox}
+}
+\newenvironment{infoboxi}[1][]{%
+	\refstepcounter{infobox}
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,title={Box \theinfobox\quad #1},colframe=mygreen,upperbox=invisible,colback=white]%
+}{%
+    \end{tcolorbox}
+}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+\newenvironment{eqbox}[1][]{%
+	\refstepcounter{equation}
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,title={Equation \theequation\quad #1},colframe=mydarkgrey,colback=white]%
+}{%
+    \end{tcolorbox}
+}
+\newenvironment{eqboxi}[2][]{%
+	\refstepcounter{equation}
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,title={Equation \theequation\quad #1},colframe=mydarkgrey,upperbox=invisible,colback=white,label=#2]%
+}{%
+    \end{tcolorbox}
+}
+\newenvironment{eqboxtwo}[1][]{%
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,notitle,colframe=white,colback=white]%
+}{%
+    \end{tcolorbox}
+}
+\newenvironment{eqboxtwoi}[1][]{%
+	\begin{tcolorbox}[fonttitle=\bfseries\sffamily,breakable,notitle,colframe=white,upperbox=invisible,colback=white]%
+}{%
+    \end{tcolorbox}
+}
+
+\usepackage{ifthen}
+\newboolean{show}
+\ifdefined\ispartial
+  \setboolean{show}{false}
+\else
+  \setboolean{show}{true}
+\fi
+
+%-- examples
+
+\newcounter{myexample}[section]
+\renewcommand{\themyexample}{\thesection-\arabic{myexample}}
+\ifthenelse{\boolean{show}}{
+	\newenvironment{myexample}[1][]{%
+		\refstepcounter{myexample}
+		\begin{tcolorbox}[%
+			title={Example \themyexample\quad #1},
+			breakable,
+			% height fill,
+			enhanced,
+			colframe=mygreen,
+			lowerbox=visible
+			]%
+	}{%
+	    \end{tcolorbox}
+	}
+}{
+	\newenvironment{myexample}[1][]{%
+		\refstepcounter{myexample}
+		\begin{tcolorbox}[%
+			title={Example \themyexample\quad #1},
+			breakable,
+			% height fill,
+			enhanced,
+			colframe=mygreen,
+			lowerbox=invisible,
+      		every float=\centering
+			]%
+	}{%
+	    \end{tcolorbox}
+	}
+}
+
+\newenvironment{myexamplealways}[1][]{%
+	\refstepcounter{myexample}
+	\begin{tcolorbox}[%
+		title={Example \themyexample\quad #1},
+		breakable,
+		% height fill,
+		enhanced,
+		colframe=mygreen,
+		lowerbox=visible
+		]%
+	}{%
+	    \end{tcolorbox}
+	}
+
+\newcommand{\mayb}[1]{%
+\ifthenelse{\boolean{show}}{#1}{\phantom{#1}}%
+}%
+\newcommand{\examplemaybe}[4]{
+	\begin{myexample}[#1] \label{#4}
+		#2
+
+		\tcblower
+
+		#3
+	% 	{\color{lightgray}\rule{1\linewidth}{.4pt}}\\
+	% 	{\textbf{Solution}}\\[.5\baselineskip]
+ %  \ifthenelse{\boolean{show}}{#3}{
+	% #3
+ %  }
+	\end{myexample}
+}%
+
+%- other hidden stuff
+
+\newcommand{\maybe}[1]{
+	\ifthenelse{\boolean{show}}{
+		\begin{tcolorbox}[breakable,colframe=white,colback=white,notitle] #1 \end{tcolorbox}}{
+		\begin{tcolorbox}[breakable,colframe=white,upperbox=invisible,colback=white,notitle] #1 \end{tcolorbox}
+	}%
+}%
+\newcommand{\mayben}[3]{
+	\ifthenelse{\boolean{show}}{
+		\begin{infobox}[#1] \label{#2} #3 \end{infobox}}{
+		\begin{infoboxi}[#1] \label{#2} #3 \end{infoboxi}
+	}%
+}%
+\newcommand{\maybeeq}[1]{
+	\ifthenelse{\boolean{show}}{
+		\begin{eqboxtwo} {\setlength{\abovedisplayskip}{0pt}\setlength{\belowdisplayskip}{0pt}#1} \end{eqboxtwo}}{
+		\begin{eqboxtwoi} {\setlength{\abovedisplayskip}{0pt}\setlength{\belowdisplayskip}{0pt}#1} \end{eqboxtwoi}
+	}%
+}%
+\newcommand{\maybeeqn}[3]{
+	\ifthenelse{\boolean{show}}{
+		\begin{eqbox}[#1] \label{#2} {\setlength{\abovedisplayskip}{0pt}\setlength{\belowdisplayskip}{0pt}#3} \end{eqbox}}{
+		\begin{eqboxi}[#1]{#2} {\setlength{\abovedisplayskip}{0pt}\setlength{\belowdisplayskip}{0pt}#3} \end{eqboxi}
+	}%
+}%
+
+%- theorems
+
+\tcbset{
+defstyle/.style={%
+  fonttitle=\bfseries\sffamily,
+  %fontupper=\slshape,
+  arc=0mm,
+  colback=blue!5!white,colframe=blue!75!black},
+  theostyle/.style={%
+    fonttitle=\bfseries\sffamily,
+    % fontupper=\slshape,
+    colback=red!10!white,colframe=red!75!black},
+}
+\newtcbtheorem[number within=section,crefname={Definition}{Definitions}]%
+{Definition}{Definition}{defstyle}{def}
+\newtcbtheorem[use counter from=Definition,crefname={theorem}{theorems}]%
+{Theorem}{Theorem}{theostyle}{theo}
+\newtcbtheorem[use counter from=Definition,crefname={corollary}{corollaries}]%
+{Corollary}{Corollary}{theostyle}{cor}
+\makeatletter
+\newcommand\tcb@cnt@Definitionautorefname{Definition}
+\newcommand\tcb@cnt@Theoremautorefname{Theorem}
+\newcommand\tcb@cnt@Corollaryautorefname{Corollary}
+\makeatother
+
+\newlength\ansheight % ?
+
+%- visible space
+
+\newcommand\Vtextvisiblespace[1][.3em]{%
+  \mbox{\kern.1em\vrule height.3ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.3ex}\kern.1em}
+\newcommand{\emp}{\Vtextvisiblespace}% For ease-of-use
+
+%- geometry and margins
+
+\setlrmarginsandblock{1.75in}{1.75in}{*}
+\setulmarginsandblock{1.75in}{1.75in}{*}
+\makeatletter
+\setlength{\headsep}{15pt}
+\setlength{\footskip}{30pt}
+\makeatother
+\usepackage{xifthen}
+\newcommand{\mymarginpar}[1]{%
+  \marginpar[\raggedleft#1]{\raggedright#1}}
+\newcommand{\keyword}[2][]{%
+	\ifthenelse{\isempty{#1}}{%
+		\mymarginpar{%
+			\footnotesize\sffamily\bfseries\textcolor{mygreen}{#2}%
+		}%
+		\emph{#2}%
+	}{%
+		\mymarginpar{%
+			\footnotesize\sffamily\bfseries\textcolor{mygreen}{#1}%
+		}%
+		\emph{#2}%
+	}%
+}%
+\setmarginnotes{1em}{.7\marginparwidth}{1ex}
+\checkandfixthelayout
+
+%-- exam geometry and margins
+
+% \newcommand{\examgeometry}{%
+\ifdefined\isexam
+  \setlrmarginsandblock{.5in}{.5in}{*}
+  \setulmarginsandblock{.75in}{.75in}{*}
+  \checkandfixthelayout
+\fi
+% }
+% \makeatletter
+% \setlrmarginsandblock{.5in}{.5in}{*}
+% \setulmarginsandblock{.65in}{.65in}{*}
+% % \setheaderspaces{*}{3pt}{*}
+% % \setfooterspaces{*}{3pt}{*}
+% \setheadfoot{.5in}{.5in}
+% % \setlength{\headsep}{3pt}
+% % \setlength{\footskip}{3pt}
+% \makeatother
+% \checkandfixthelayout
+% }
+
+%- chapters
+
+\chapterstyle{ell}
+
+%- page styles
+
+\makepagestyle{myruled}
+\makerunningwidth{myruled}[1\textwidth]{1\textwidth}
+\makeheadrule {myruled}{\myruledheadrunwidth}{\normalrulethickness}
+\makefootrule {myruled}{\myruledfootrunwidth}{\normalrulethickness}{\footruleskip}
+\makeevenhead {myruled}{\small\ttfamily\thetitle}{} {\small\itshape\theauthor}
+\makeoddhead {myruled}{\small\ttfamily\thetitle}{} {\small\itshape\theauthor}
+\makeevenfoot {myruled}
+  {\small \mydate\today{}, \currenttime}
+  {\small }
+  {\small \thepage}
+\makeoddfoot {myruled}
+  {\small \mydate\today{}, \currenttime}
+  {\small \mydate\today{}, \currenttime}
+  {\small \thepage}
+\makeatletter % because of \@chapapp
+\makepsmarks {myruled}{
+\nouppercaseheads
+% \createmark {chapter} {both} {shownumber}{\@chapapp\ }{ \ }
+% \createmark {section} {none} {}{}{}
+%\createmark {subsection} {right}{shownumber}{} {. \ }
+%\createmark {subsubsection}{right}{shownumber}{} {. \ }
+% \createplainmark {toc} {both} {\contentsname}
+% \createplainmark {lof} {both} {\listfigurename}
+% \createplainmark {lot} {both} {\listtablename}
+% \createplainmark {bib} {both} {\bibname}
+% \createplainmark {index} {both} {\indexname}
+% \createplainmark {glossary} {both} {\glossaryname}
+}
+\makeatother
+
+\makepagestyle{myruledlabs}
+\makerunningwidth{myruledlabs}[1\textwidth]{1\textwidth}
+\makeheadrule {myruledlabs}{\myruledheadrunwidth}{\normalrulethickness}
+\makefootrule {myruledlabs}{\myruledfootrunwidth}{\normalrulethickness}{\footruleskip}
+\makeevenhead {myruledlabs}{\small\itshape \leftmark}{} {\small\itshape \rightmark}
+\makeoddhead {myruledlabs}{\small\itshape \leftmark}{} {\small\itshape \rightmark}
+\makeevenfoot {myruledlabs}{\small \thepage}{\small \mydate\today{}, \currenttime}{\small \thesection\,\texorpdfstring{\raise0.18ex\hbox{$\ni$}}{}\ \texorpdfstring{\kern1.75pt}{}\the\numexpr\value{sectionpagecounter}+1\relax}
+\makeoddfoot {myruledlabs}{\small \thepage}{\small \mydate\today{}, \currenttime}{\small \thesection\,\texorpdfstring{\raise0.18ex\hbox{$\ni$}}{}\ \texorpdfstring{\kern1.75pt}{}\the\numexpr\value{sectionpagecounter}+1\relax}
+\makeatletter % because of \@chapapp
+\makepsmarks {myruledlabs}{
+\nouppercaseheads
+% \createmark {chapter} {left} {shownumber}{\@chapapp\ }{. \ }
+% \createmark {chapter} {left} {shownumber}{Lab Exercise}{. \ }
+% \createmark {section} {right}{shownumber}{\ Lab Exercise \thechapter:\ }{}
+% \createplainmark{section}{right}{Lab Exercise \thelab}
+%\createmark {subsection} {right}{shownumber}{} {. \ }
+%\createmark {subsubsection}{right}{shownumber}{} {. \ }
+\createmark{section}{right}{nonumber}{\small\itshape}{}
+\createplainmark {toc} {both} {\contentsname}
+\createplainmark {lof} {both} {\listfigurename}
+\createplainmark {lot} {both} {\listtablename}
+\createplainmark {bib} {both} {\bibname}
+\createplainmark {index} {both} {\indexname}
+\createplainmark {glossary} {both} {\glossaryname}
+}
+\makeatother
+
+\makepagestyle{myruledresources}
+\makerunningwidth{myruledresources}[1\textwidth]{1\textwidth}
+\makeheadrule {myruledresources}{\myruledheadrunwidth}{\normalrulethickness}
+\makefootrule {myruledresources}{\myruledfootrunwidth}{\normalrulethickness}{\footruleskip}
+\makeevenhead {myruledresources}{\small\itshape \leftmark}{} {\small\itshape \rightmark}
+\makeoddhead {myruledresources}{\small\itshape \leftmark}{} {\small\itshape \rightmark}
+\makeevenfoot {myruledresources}{\small \thepage}{\small \mydate\today{}, \currenttime}{\small Resource \arabic{resourcecounter}\ \texorpdfstring{\raise0.18ex\hbox{$\ni$}}{}\,\texorpdfstring{\kern1.75pt}{}\the\numexpr\value{sectionpagecounter}+1\relax}
+\makeoddfoot {myruledresources}{\small \thepage}{\small \mydate\today{}, \currenttime}{\small Resource \arabic{resourcecounter}\ \texorpdfstring{\raise0.18ex\hbox{$\ni$}}{}\,\texorpdfstring{\kern1.75pt}{}\the\numexpr\value{sectionpagecounter}+1\relax}
+\makeatletter % because of \@chapapp
+\makepsmarks {myruledresources}{
+\nouppercaseheads
+\createmark{section}{right}{nonumber}{\small\itshape}{}
+% \createmark {chapter} {left} {shownumber}{\@chapapp\ }{. \ }
+% \createmark {chapter} {left} {shownumber}{Lab Exercise}{. \ }
+% \createmark {section} {right}{shownumber}{\ Lab Exercise \thechapter:\ }{}
+% \createplainmark{section}{right}{Lab Exercise \thelab}
+%\createmark {subsection} {right}{shownumber}{} {. \ }
+%\createmark {subsubsection}{right}{shownumber}{} {. \ }
+\createplainmark {toc} {both} {\contentsname}
+\createplainmark {lof} {both} {\listfigurename}
+\createplainmark {lot} {both} {\listtablename}
+\createplainmark {bib} {both} {\bibname}
+\createplainmark {index} {both} {\indexname}
+\createplainmark {glossary} {both} {\glossaryname}
+}
+\makeatother
+
+\makepagestyle{myruledexams}
+\makerunningwidth{myruledexams}[1\textwidth]{1\textwidth}
+\makeheadrule {myruledexams}{\myruledheadrunwidth}{\normalrulethickness}
+\makefootrule {myruledexams}{\myruledfootrunwidth}{\normalrulethickness}{\footruleskip}
+\makeevenhead {myruledexams}{\small\itshape \testdate{}}{} {}
+\makeoddhead {myruledexams}{\small\itshape \testdate{}}{} {Name:\qquad\qquad\qquad\qquad\qquad}
+\makeevenfoot {myruledexams}{\small \classname{}: \testname{}}{}{\small \thepage}
+\makeoddfoot {myruledexams}{\small \classname{}: \testname{}}{}{\small \thepage}
+\makeatletter % because of \@chapapp
+\makepsmarks {myruledexams}{
+\nouppercaseheads
+% \createmark{section}{right}{nonumber}{\small\itshape}{}
+% \createmark {chapter} {left} {shownumber}{\@chapapp\ }{. \ }
+% \createmark {chapter} {left} {shownumber}{Lab Exercise}{. \ }
+% \createmark {section} {right}{shownumber}{\ Lab Exercise \thechapter:\ }{}
+% \createplainmark{section}{right}{Lab Exercise \thelab}
+%\createmark {subsection} {right}{shownumber}{} {. \ }
+%\createmark {subsubsection}{right}{shownumber}{} {. \ }
+% \createplainmark {toc} {both} {\contentsname}
+% \createplainmark {lof} {both} {\listfigurename}
+% \createplainmark {lot} {both} {\listtablename}
+% \createplainmark {bib} {both} {\bibname}
+% \createplainmark {index} {both} {\indexname}
+% \createplainmark {glossary} {both} {\glossaryname}
+}
+\makeatother
+
+\makepagestyle{myruled2}
+\makerunningwidth{myruled2}[6.5in]{6.5in}
+\makeheadrule {myruled2}{6.5in}{\normalrulethickness}
+\makefootrule {myruled2}{6.5in}{\normalrulethickness}{\footruleskip}
+\makeevenhead {myruled2}{\small\itshape\leftmark}{} {\small\itshape\rightmark}
+\makeoddhead {myruled2}{\small\itshape\leftmark}{} {\small\itshape\rightmark}
+\makeevenfoot {myruled2}{\small \thepage}{\small \mydate\today{}, \currenttime}{\small \thepage}
+\makeoddfoot {myruled2}{\small \thepage}{\small \mydate\today{}, \currenttime} {\small \thepage}
+\makeatletter % because of \@chapapp
+\makepsmarks {myruled2}{
+\nouppercaseheads
+% \createmark {chapter} {both} {shownumber}{\@chapapp\ }{ \ }
+% \createmark {section} {right}{shownumber}{%
+% %Lecture\ 
+% } { \ }
+%\createmark {subsection} {right}{shownumber}{} {. \ }
+%\createmark {subsubsection}{right}{shownumber}{} {. \ }
+\createplainmark {toc} {both} {\contentsname}
+\createplainmark {lof} {both} {\listfigurename}
+\createplainmark {lot} {both} {\listtablename}
+\createplainmark {bib} {both} {\bibname}
+\createplainmark {index} {both} {\indexname}
+\createplainmark {glossary} {both} {\glossaryname}
+}
+\makeatother
+
+\makepagestyle{plain}
+\makerunningwidth{plain}{\headwidth}
+\makeevenfoot{plain}{}{}{}
+\makeoddfoot{plain}{}{}{}
+\setsecnumdepth{subsubsection}
+\pagestyle{myruled}
+
+%- sections and subsections
+
+%\setbeforesecskip{-1.333\onelineskip\@plus -0.5\onelineskip \@minus -.5\onelineskip}%
+%\setaftersecskip{0.667\onelineskip \@plus 0.1\onelineskip}%
+\setsecheadstyle{\sffamily\bfseries\raggedright\Large}%
+% subsection
+%\setbeforesubsecskip{-0.667\onelineskip\@plus -0.25\onelineskip \@minus -0.25\onelineskip}%
+%\setaftersubsecskip{0.333\onelineskip \@plus 0.1\onelineskip}%
+\setsubsecheadstyle{\sffamily\large\raggedright}%
+% subsubsection
+
+%\setbeforesubsubsecskip{-0.667\onelineskip\@plus -0.25\onelineskip \@minus -0.25\onelineskip}%
+%\setaftersubsubsecskip{0.333\onelineskip \@plus 0.1\onelineskip}%
+\setsubsubsecheadstyle{\normalsize\itshape\raggedright}%
+
+%- bode plot macros
+
+% \newcommand{\magplot}[2]{
+% \begin{tikzpicture}
+% 	\begin{semilogxaxis}[
+% 		width=.5\linewidth,
+% 		height=2.2in,
+% 		grid=both,
+% 		%enlarge x limits,
+% 		ylabel = #1,
+% 		xlabel = $\omega$ (rad/s),
+% %		xtick = {.1,1,10,100,1000},
+% %		ytick = {20,0,-20,-40,-60},
+% 		ymin = -60,
+% 		ymax = 20,
+% 		xmin = .1,
+% 		xmax = 1000,
+% 		samples=70
+% 	]
+% 	#2
+% 	\end{semilogxaxis}
+% \end{tikzpicture}
+% }
+\newcommand{\angleplot}[5]{
+\begin{tikzpicture}
+	\begin{semilogxaxis}[
+		width=.5\linewidth,
+		height=2.2in,
+		grid=both,
+		%enlarge x limits,
+		ylabel = #1,
+		xlabel = $\omega$ (rad/s),
+%		xtick = {.1,1,10,100,1000},
+		ytick = #2,
+		ymin = #3,
+		ymax = #4,
+		xmin = .1,
+		xmax = 1000,
+		samples=70
+	]
+	#5
+	\end{semilogxaxis}
+\end{tikzpicture}
+}
+%\noindent\magplot{$|H(j\omega)|$ (dB)}{}
+%\angleplot{$\phi(j\omega)$ (deg)}{{90,60,30,0,-30,-60,-90}}{-90}{90}{}
+\newcommand{\magplot}[2]{
+\begin{tikzpicture} 
+  \begin{semilogxaxis}[
+    width=1\linewidth,
+    height=2in,
+    grid=both,
+    %enlarge x limits,
+    ylabel = #1,
+    xlabel = $\omega$ (rad/s),
+    xtick = {.1,1,10,100,1000,10000},
+    ytick = {40,20,0,-20,-40},
+    ymin = -40,
+    ymax = 40,
+    xmin = .1,
+    xmax = 10000,
+    samples=70,
+    axis lines=box,
+  ]
+  #2
+  \end{semilogxaxis} 
+\end{tikzpicture} 
+}
+
+\newcommand{\phaseplot}[5]{
+\begin{tikzpicture} 
+  \begin{semilogxaxis}[
+    width=1\linewidth,
+    height=2in,
+    grid=both,
+    %enlarge x limits,
+    ylabel = #1,
+    xlabel = $\omega$ (rad/s),
+    xtick = {.1,1,10,100,1000,10000},
+    ytick = #2,
+    ymin = #3,
+    ymax = #4,
+    xmin = .1,
+    xmax = 10000,
+    samples=70,
+    axis lines=box,
+  ]
+  #5
+  \end{semilogxaxis} 
+\end{tikzpicture} 
+}
+
+%- quote environment
+
+\AtBeginEnvironment{quote}{\itshape}
+
+%- cancel terms!
+
+\usepackage{cancel}
+
+%- wrap figures!
+
+\usepackage{wrapfig}
+
+%- this helps find sage/jupyter graphics
+
+\graphicspath{{./},{./figures/},{./notebooks/}}
+
+%- jupyter graphics preferred as pdfs
+% see https://tex.stackexchange.com/q/316445/56465
+
+\makeatletter
+\preto\Gin@extensions{png,}
+\DeclareGraphicsRule{.png}{pdf}{.pdf}{\noexpand\Gin@base.pdf}
+\makeatother
+
+%- hyphenation and line breaking
+
+\pretolerance=1000
+\tolerance=500 
+\emergencystretch=5em
+
+% use tcolorbox frames for minted environments
+% \AtBeginEnvironment{minted}{\begin{tcolorbox}}
+% \AtEndEnvironment{minted}{\end{tcolorbox}}
+
+%- table of contents
+
+\cftsetindents{section}{0em}{1.5em}
+\cftsetindents{subsection}{1.5em}{1.5em}
+
+%- math macros
+
+\newcommand{\x}{\bm{x}}
+\newcommand{\xd}{\bm{\dot{x}}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\newcommand*{\carry}[1][1]{\overset{#1}}
+\newcolumntype{B}[1]{r*{#1}{@{\,}l}}
+
+%- other macros
+
+\newcommand{\emptybox}[1]{\framebox{\vphantom{|}\rule{#1}{0mm}}}
+\newcommand{\mybox}[1]{\framebox[7em][c]{\vphantom{|}#1}}
+
+%- lab macro
+
+\newcommand{\lab}[2]{%
+% \newcommand*\thelab{\ifnum\value{chapter}<10 0\fi\arabic{chapter}}
+\resetsectionpagecount
+\titleformat{\section}{\Large\sffamily\bfseries}{Lab Exercise \thechapter}{1ex}{}
+\pagestyle{myruledlabs}
+\section[Lab Exercise \thechapter #1]{#2}
+\renewcommand*\thesection{Lab \thechapter}
+\renewcommand*\thesubsection{Lab \thechapter.\arabic{subsection}}
+% \titleformat{\subsection}{\sffamily}{\thesubsection}{1ex}{}
+} 
+
+%- resource macro ... now with magic!
+% see https://tex.stackexchange.com/questions/448793/special-section-names-and-counter-in-memoir-with-cleveref/448938#448938
+% note that the lab macro escapes this evil because it can use the chapter number
+
+\newcounter{resourcecounter}
+% \setcounter{resourcecounter}{0}
+\newcommand{\resourcer}[1]{% the magic
+  \refstepcounter{resourcecounter}\label[resource]{#1}%
+}
+\newcommand{\resource}[3]{%
+  \clearpage
+  \pagestyle{myruledresources}
+  \titleformat{\section}{\Large\sffamily\bfseries}{Resource: \arabic{resourcecounter}}{1ex}{}
+  \resourcer{#3}
+  \section[%
+    Resource \theresourcecounter: #1%
+  ]{%
+    #2%
+  }
+  \renewcommand*\thesubsection{\arabic{resourcecounter}.\arabic{subsection}}
+  \titleformat{\subsection}{\sffamily}{Resource \thesubsection}{1ex}{}
+  \renewcommand*\thesubsubsection{\arabic{resourcecounter}.\arabic{subsection}.\arabic{subsubsection}}
+  \titleformat{\subsubsection}{\itshape}{Resource \thesubsubsection}{1ex}{}
+  \thispagestyle{myruledresources}
+}
+% \newcommand{\resource}[2]{
+% \stepcounter{resourcecounter}
+% \pagestyle{myruledresources}
+% \clearpage
+% \pagestyle{myruledresources}
+% \titleformat{\section}{\Large\sffamily\bfseries}{Resource \arabic{resourcecounter}}{1ex}{}
+% \section[Resource \arabic{resourcecounter}: #1]{#2}
+% % \renewcommand*\thesection{R\arabic{resourcecounter}}
+% \renewcommand*\thesubsection{\arabic{resourcecounter}.\arabic{subsection}}
+% \titleformat{\subsection}{\sffamily}{Resource \thesubsection}{1ex}{}
+% \thispagestyle{myruledresources}
+% }
+
+% \newcommand*\theresource{\arabic{resourcecounter}}
+% \titleformat{\section}{\Large\sffamily\bfseries}{Resource \theresource}{1em}{}
+
+%- stamp macro
+
+\newcommand{\ol}{% OL or "open lab" macro
+\begin{tikzpicture}[baseline=-.6ex]\node[draw=blue!80!black,very thick,rounded corners=5pt] at (0,0) {\footnotesize\sffamily\bfseries\color{blue!80!black} OL};\end{tikzpicture}%
+}
+
+%- unselectable period macro
+
+\newcommand{\uperiod}{%
+\begin{tikzpicture}
+\draw[fill=black,draw=none] (0,0) circle (.6pt);
+\end{tikzpicture}%
+}
+
+%- school-specific content macros
+
+\newcommand{\schoolnow}{smu}
+\newcommand{\school}[2]{%
+  \lowercase{\def\theschool{#1}}%
+  \ifthenelse{%
+      \equal{\theschool}{uw} \AND % 
+      \equal{\schoolnow}{uw}%
+    }%
+    {#2}%
+    {%
+      \ifthenelse{%
+          \equal{\theschool}{smu} \AND % 
+          \equal{\schoolnow}{smu}%
+        }%
+        {#2}%
+        {}%
+   }%
+}
+
+%- footnotes (allows for multiple footnotes with hyperref)
+
+\let\oldFootnote\footnote
+\newcommand\nextToken\relax
+\renewcommand\footnote[1]{%
+    \oldFootnote{#1}\futurelet\nextToken\isFootnote}
+\newcommand\isFootnote{%
+    \ifx\footnote\nextToken\textsuperscript{,}\fi}
+
+%- description environment appearance
+\newcommand\mydescriptionlabel[1]{\hspace{\labelsep}\sffamily\fontseries{sbc}\selectfont\upshape #1}
+\newenvironment{mydescription}{%
+   \let\descriptionlabel\mydescriptionlabel
+   \description
+}{%
+   \enddescription
+}
+
+%- a real transpose
+
+\makeatletter
+\catcode`! 3
+\catcode0 12
+% The update chooses safer macro names.
+% It could be useful to allow #1 to be itself a macro expanding
+% to some rows. One could replace \Mar@DoOneRow by 
+% \expandafter\Mar@DoOneRow but then general usage must be aware
+% of this one-expansion of contents.
+% Usage: \Transpose { &-separated cells \\ &-separated cells \\ ...
+%                     ...\\&-separated cells and *no* final \\ }
+% Can be used inside amsmath matrices as well as inside LaTeX tabular's
+% 
+\def\Transpose #1{\romannumeral0\expandafter
+                  \Mar@Transpose@a\romannumeral`^^@\Mar@DoOneRow #1\\!\\}
+\def\Mar@DoOneRow #1\\{\Mar@DoOneRow@a {}#1&^^@&}%
+\def\Mar@DoOneRow@a #1#2&{%
+    \if^^@\detokenize{#2}\expandafter\@gobble\fi
+    \Mar@DoOneRow@a {#1#2\\}%
+}%
+% unbraced #1 here will end in \\^^@\\
+\def\Mar@Transpose@a #1#2\\{\ifx!#2\expandafter\Mar@FinishTranspose\fi
+    \expandafter\Mar@Transpose@b\romannumeral`^^@\Mar@DoOneRow@a {}#2&^^@&#1}
+% unbraced #1 here will end with \\^^@\\
+% It represents a new transposed row with an extra ^^@ cell.
+% The #2 here ends in \\. It holds the first already transposed rows.
+\def\Mar@Transpose@b #1#2^^@\\{\Mar@Join {}#2^^@!#1}
+% when #3=^^@ happens after #4\\ there is still ^^@\\
+% update slightly simplifies \Mar@Join.
+\def\Mar@Join #1#2\\#3!#4\\%
+   {\if^^@\detokenize{#3}\expandafter\Mar@EndJoin\fi
+    \Mar@Join {#1#2&#4\\}#3!}%
+% unbraced #1 ends with \\
+\def\Mar@EndJoin\Mar@Join #1^^@!^^@\\{\Mar@Transpose@a {#1^^@\\}}
+\def\Mar@FinishTranspose
+    #1&^^@&#2\\^^@\\{ #2}% the \\^^@\\ pattern helps removing a final \\
+\catcode`! 12
+\catcode0 15 % null character "invalid": this is default LaTeX setting.
+\makeatother
+
+%- misc macros
+
+\newcommand{\defref}[1]{\hyperref[#1]{Definition~\ref*{#1}}}
+\newcommand\nobreakhyph{\mbox{-}}
+
+
+%- include pdfs
+
+\usepackage{pdfpages}
+
+
+%- problems and solutions
+
+\usepackage{xsim} % replaces exsheets
+% this is so we can insert with ID instead of id
+\newcommand*\insertexercise[1]{%
+  \XSIMexpandcode{\printexercise{exercise}{\GetExerciseIdForProperty{ID}{#1}}}%
+}
+
+\ifdefined\isexam
+  \DeclareExerciseEnvironmentTemplate{myrunin}
+  {%
+  \par\vspace{\baselineskip}
+  \noindent
+  \tcolorbox[
+  colframe = mygreen ,
+  colbacktitle = mygreen ,
+  coltitle = white ,
+  breakable ,
+  enhanced,
+  beforeafter skip = .1\baselineskip ,
+  title =
+  \sffamily\textbf{\XSIMmixedcase{\GetExerciseName}~\GetExerciseProperty{counter}}%
+  \IfInsideSolutionF{ %
+  \hfill %(%
+  \GetExercisePropertyTF{points}{%
+  \printgoal{\PropertyValue}%
+  \,\IfExerciseGoalSingularTF{points}
+  {\XSIMtranslate{point}}
+  {\XSIMtranslate{points}}%
+  }{}%
+  \GetExercisePropertyTF{bonus-points}{%
+  \IfExerciseGoalSingularT{points}{, }%
+  extra credit: +\printgoal{\PropertyValue}%
+  \,\IfExerciseGoalSingularTF{points}
+  {\XSIMtranslate{point}}
+  {\XSIMtranslate{points}}%
+  }{}%
+  %)%
+  }%
+  ]
+  }
+  {\endtcolorbox}
+  \xsimsetup{
+    exercise/within = chapter ,
+    exercise/the-counter = \arabic{exercise} ,
+    exercise/template = myrunin ,
+    exercise/name = Problem ,
+    path = {exercises},
+  }
+\else
+  \xsimsetup{
+    exercise/within = chapter ,
+    exercise/the-counter = \thechapter.\arabic{exercise} ,
+    exercise/template = default ,
+    exercise/name = Exercise ,
+    path = {exercises},
+  }
+\fi
+
+% \renewcommand\thequestion{\thechapter.\arabic{question}}
+% \newlist{enumerate_question}{1}
+% \setlist[enumerate_question,1]{label=\alph*),ref=\thequestion\alph*)} % this has to do with parts of problems, like (a), (b), etc ... but I can't figure out how to make it not break my other stuff
+
+% \DeclareInstance{exsheets-heading}{block-subtitle}{default}{
+%   join = {
+%   title[r,B]number[l,B](.333em,0pt) ;
+%   title[r,B]subtitle[l,B](1em,0pt)
+%   } ,
+%   attach = {
+%   main[l,vc]title[l,vc](0pt,0pt) ;
+%   main[r,vc]points[l,vc](\marginparsep,0pt)
+%   }
+% }
+
+
+%- tikz and pgf
+
+\usepackage{tikz}
+%\usepackage{pgfmath}
+\usepackage{etoolbox}
+\usepackage{pgfplots}
+%\usepgfplotslibrary{fillbetween}
+%\usetikzlibrary{calc}
+\usetikzlibrary{arrows.meta}
+\pgfplotsset{compat=1.9}
+\usetikzlibrary{backgrounds}
+\usepackage{currfile}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{calc,patterns,decorations.pathmorphing,decorations.markings}
+
+%-- linear graphs
+
+\tikzstyle{groundmech}=
+  [
+    fill,
+    pattern=north east lines,
+    draw=none,
+    minimum width=0.75cm,
+    minimum height=0.3cm
+  ]
+\tikzstyle{normaltree}=
+  [
+    color=mygreen,
+    very thick
+  ]
+
+\def\tf#1#2{
+\begin{scope}[shift={#1},scale={#2}]
+  \node [draw,
+    minimum width=25pt,
+    minimum height=10pt,
+    thick,dashed,
+    line cap=round,
+    densely dashed,
+    color=violet,
+    rounded corners=3pt
+  ]
+  at (0,0) {};
+\end{scope}
+}
+
+\def\gy#1#2{
+\begin{scope}[shift={#1},scale={#2}]
+  \draw [thick,dashed,
+  line cap=round,
+  densely dashed,
+  color=violet,
+  rounded corners=10pt]
+  (-.2,.22) -- (.2,-.18) -- (.2,.22) -- (-.2,-.18) -- cycle;
+\end{scope}
+}
+
+%-- circuits
+
+\usepackage[americanvoltages,americancurrents,oldvoltagedirection]{circuitikz}
+
+\tikzset{%
+bend angle=30,
+branch/.style={=>,thick,postaction={decorate},
+decoration={markings,mark=at position 0.5 with {\arrow{>}}},line cap=round},
+branchnoarrow/.style={=>,thick,line cap=round},
+sourcebranch/.style={thick,postaction={decorate},
+decoration={markings,mark=at position 0.55 with {\arrow{>}}},decoration={mark=at position 0.5 with {\draw circle (10pt);}},line cap=round},
+sourcebranchnoarrow/.style={thick,postaction={decorate},decoration={markings,mark=at position 0.5 with {\draw circle (10pt);}}},
+graphnode/.style={circle,draw=black,fill=lightgray,thick,inner sep=0pt,minimum size=1.5mm,line cap=round},
+groundnode/.pic={%
+  \draw[thick, line cap=round] (-.25,0) -- (.25,0);
+  \draw[thick, line cap=round] (-.15,0) -- ++(-.15,-.15);
+  \draw[thick, line cap=round] (-.05,0) -- ++(-.15,-.15);
+  \draw[thick, line cap=round] (.05,0) -- ++(-.15,-.15);
+  \draw[thick, line cap=round] (.15,0) -- ++(-.15,-.15);
+  \draw[thick, line cap=round] (.25,0) -- ++(-.15,-.15);
+},
+font={\small}%
+}%
+
+%-- block diagrams
+
+\tikzset{
+  summing junction/.style={
+    circle,
+    draw=black,
+    % fill=FlowChartBlue,
+    minimum size=.4cm,
+    path picture={
+      \draw [black]
+        (path picture bounding box.135) -- (path picture bounding box.315)
+        (path picture bounding box.45) -- (path picture bounding box.225);
+    }
+  }
+}
+
+%-- mechanical schematics
+
+\tikzstyle{spring}=
+  [
+    % double,
+    thick,
+    decorate,
+    decoration={coil,pre length=0.5cm,post length=0.5cm,segment length=6,amplitude=6}
+  ]
+\tikzstyle{damper}=
+  [
+    thick,
+    decoration=
+      {
+        markings,
+        mark connection node=dmp,
+        mark=at position 0.5 with
+        {
+          \node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=15pt,minimum height=3pt,draw=none] {};
+          \draw [thick] ($(dmp.north east)+(2pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(2pt,0)$);
+          \draw [thick] ($(dmp.north)+(0,-5pt)$) -- ($(dmp.north)+(0,5pt)$);
+        }
+      },
+    decorate
+  ]
+
+\tikzstyle{dragcup}=
+  [
+    % double,
+    thick,
+    decoration=
+      {
+        markings,
+        mark connection node=dmp,
+        mark=at position 0.5 with
+        {
+          \node (dmp) [inner sep=0pt,transform shape,rotate=-90,minimum width=15pt,minimum height=3pt,draw=none] {};
+          \draw [thick] ($(dmp.north east)+(4pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(4pt,0)$);
+          \draw [thick] ($(dmp.north)+(0,-5pt)$) -- ($(dmp.north)+(0,5pt)$);
+          \draw[thick] (0,5pt) -- ++(4pt,0);
+          \draw[thick] (0,-5pt) -- ++(4pt,0);
+        }
+      },
+    decorate
+  ]
+\newcommand{\balloffset}{.75\pgflinewidth}
+\tikzstyle{bearing}=
+  [
+    shaft,
+    decoration=
+      {
+        markings,
+        mark connection node=dmp,
+        mark=at position 0.5 with
+        {
+          \node (dmp) [rectangle,inner sep=0pt,minimum width=.5cm,minimum height=.2cm] {};
+          \draw ($(dmp)+(-.33,-.27)$) coordinate (g1) -- ($(dmp)+(.33,-.27)$) coordinate (g2); 
+          \draw[fill,pattern=north east lines,draw=none,] (g1) rectangle ($(g2)+(0,-.11)$);
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=south] at ($(dmp.north)+(0,-\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=south] at ($(dmp.north)+(-.08,-\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=south] at ($(dmp.north)+(-.08*2,-\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=south] at ($(dmp.north)+(.08,-\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=south] at ($(dmp.north)+(.08*2,-\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=north] at ($(dmp.south)+(0,\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=north] at ($(dmp.south)+(-.08,\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=north] at ($(dmp.south)+(-.08*2,\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=north] at ($(dmp.south)+(.08,\balloffset)$) {};
+          \node[circle,draw,inner sep=0pt,text width=.08cm,anchor=north] at ($(dmp.south)+(.08*2,\balloffset)$) {};
+          \node[rectangle,draw,inner sep=0pt,outer sep=0pt,minimum width=.5cm,minimum height=.08cm,fill,pattern=north east lines] at ($(dmp.north)+(0,.12)$) {};
+          \node[rectangle,draw,inner sep=0pt,outer sep=0pt,minimum width=.5cm,minimum height=.08cm,fill,pattern=north east lines] at ($(dmp.south)+(0,-.12)$) {};
+          \draw[shaft] (-.29cm,0) -- (.29cm,0);
+        }
+      },
+    decorate
+  ]
+\tikzstyle{shaft}=
+  [
+    thick,double,double distance=4pt
+  ]
+\tikzstyle{shaftcap}=
+  [
+    thick,double,double distance=4pt,line cap=rect,shorten >=2pt,shorten <=2pt
+  ]
+% I think I could get a start/finish cap by decorating the end with a line ... have to use normal line cap (butt)
+% \tikzstyle{shaftcapstart}=
+%   [
+%     thick,double,double distance=4pt,line cap=rect,shorten >=2pt,shorten <=2pt
+%   ]
+\tikzstyle{inertia}=
+  [
+    rectangle,draw,thick,minimum width=.5cm,minimum height=1.5cm,rounded corners=.5pt
+  ]
+\newcommand{\AxisRotator}[1][rotate=0]{%
+    \tikz [x=0.2cm,y=0.4cm,thick,-stealth,#1]
+    \draw[line cap=round,inner sep=0pt,outer sep=0pt] (0,0) arc (330:30:1 and 1) node[midway,rectangle,draw,minimum width=.55cm,minimum height=.2cm,color=black,fill=white,anchor=west,xshift=-2pt,thin]{};%
+}

@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{disp}\PYG{p}{([}\PYG{l+s}{\PYGZsq{}notebook filename: \PYGZsq{}}\PYG{p}{,}\PYG{n}{the\PYGZus{}notebook}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}.ipynb\PYGZsq{}}\PYG{p}{])}
+\PYG{n+nb}{disp}\PYG{p}{([}\PYG{l+s}{\PYGZsq{}notebook kernel: \PYGZsq{}}\PYG{p}{,}\PYG{n}{the\PYGZus{}kernel}\PYG{p}{])}
+\end{Verbatim}

@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}\mintinline []{text}{tf_factor} docs}{3}{section.0.1}
+\contentsline {subsection}{\numberline {1.1}Usage and examples}{5}{subsection.0.1.1}
+\contentsline {section}{\numberline {2}\mintinline []{text}{bode_multi} docs}{5}{section.0.2}
+\contentsline {subsection}{\numberline {2.1}Usage and examples}{8}{subsection.0.2.1}
+\contentsline {section}{\numberline {3}\mintinline []{text}{pole} docs}{9}{section.0.3}
+\contentsline {subsection}{\numberline {3.1}Usage and examples}{9}{subsection.0.3.1}
+\contentsline {section}{\numberline {4}\mintinline []{text}{zero} docs}{9}{section.0.4}
+\contentsline {subsection}{\numberline {4.1}Usage and examples}{10}{subsection.0.4.1}
+\contentsline {section}{\numberline {5}\mintinline []{text}{tf2latex} docs}{10}{section.0.5}
+\contentsline {subsection}{\numberline {5.1}Usage and examples}{10}{subsection.0.5.1}
