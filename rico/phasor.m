@@ -1,4 +1,4 @@
-classdef phasor
+classdef phasor < handle
     % phasor   Phasor representation for impedance analysis
     % The phasor class enables impedance analysis seamlessly.
     % Phasor instances follow the rules of phasor arithmetic
@@ -50,18 +50,24 @@ classdef phasor
             end
         end
         function c_rec = pol2rec(obj)
-            c_rec = obj.pol(1)*cos(obj.pol(2)) + 1j*obj.pol(1)*sin(obj.pol(2));
+            c_rec1 = obj.pol(1)*cos(obj.pol(2)) + 1j*obj.pol(1)*sin(obj.pol(2));
+            c_rec = simplify(rewrite(c_rec1,'sqrt'));
         end
         function c_pol = rec2pol(obj)
-            c_pol =  [sqrt(real(obj.rec)^2 + imag(obj.rec)^2), ...
-                atan2(imag(obj.rec),real(obj.rec))];
+            c_pol =  rewrite( ...
+                simplify( ...
+                    [sqrt(real(obj.rec)^2 + imag(obj.rec)^2), ...
+                    atan2(imag(obj.rec),real(obj.rec))] ...
+                ), ...
+                'sqrt' ...
+            );
         end
         function out = plus(obj1,obj2)
-            sum = obj1.rec + obj2.rec;
+            sum = phasor.simp_rec(obj1.rec + obj2.rec);
             out = phasor('rec',real(sum),imag(sum));
         end
         function out = minus(obj1,obj2)
-            sum = obj1.rec - obj2.rec;
+            sum = simp_rec(obj1.rec - obj2.rec);
             out = phasor('rec',real(sum),imag(sum));
         end
         function out = uminus(obj1)
@@ -89,14 +95,34 @@ classdef phasor
                     error('phasor scalar multiplication supports reals only')
                 end
             end
+            pro = simplify(pro);
             out = phasor('pol',pro(1),pro(2));
         end
         function out = times(obj1,obj2)
             out = mtimes(obj1,obj2);
         end
         function out = mrdivide(obj1,obj2)
-            pro = [obj1.pol(1)/obj2.pol(1), ...
-                obj1.pol(2)-obj2.pol(2)];
+            if isa(obj1,'phasor')
+                if isa(obj2,'phasor')
+                    pro = [obj1.pol(1)/obj2.pol(1), ...
+                        obj1.pol(2)-obj2.pol(2)];
+                else
+                    if isreal(obj2)
+                        pro = [obj1.pol(1)/obj2, ...
+                            obj1.pol(2)];
+                    else
+                        error('phasor scalar division supports reals only')
+                    end
+                end
+            elseif isa(obj2,'phasor')
+                if isreal(obj1)
+                    pro = [obj1/obj2.pol(1), ...
+                        -1*obj2.pol(2)];
+                else
+                    error('phasor scalar division supports reals only')
+                end
+            end
+            pro = simplify(pro);
             out = phasor('pol',pro(1),pro(2));
         end
         function out = rdivide(obj1,obj2)
@@ -109,6 +135,20 @@ classdef phasor
         end
         function out = power(obj1,pow)
             out = mpower(obj1,pow);
+        end
+    end
+    methods(Static)
+        function phasor_ex = sym2phasor(sym_ex,subs_struc)
+            sym_str = string(simplify(sym_ex));
+            names = fieldnames(subs_struc);
+            for i=1:length(names)
+                eval([names{i} '=subs_struc.' names{i} ';']);
+            end
+            phasor_ex = eval(sym_str);
+        end
+        function out = simp_rec(rec_ex)
+            % simplify rectangular forms ... avoids abs
+            out = simplify(rewrite(rec_ex,'sqrt'));
         end
     end
 end
