@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="3135151835" file="/Users/picone/code/matlab-rico/rico.prj" location="/Users/picone/code/matlab-rico" name="rico" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="122972084" file="/Users/picone/code/matlab-rico/rico.prj" location="/Users/picone/code/matlab-rico" name="rico" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>rico</param.appname>
     <param.authnamewatermark>Rico Picone</param.authnamewatermark>
     <param.email>rpicone@stmartin.edu</param.email>
@@ -7,7 +7,7 @@
     <param.summary>A collection of classes and functions to be paired with my courses.</param.summary>
     <param.description>This toolbox contains mostly transfer function functions and a class for doing phasor analysis.</param.description>
     <param.screenshot />
-    <param.version>1.0</param.version>
+    <param.version>0.1</param.version>
     <param.output>${PROJECT_ROOT}/rico.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -63,7 +63,6 @@ kill_hidden.tpl</param.exclude.filters>
     <param.additional.sw.linux.url />
     <unset>
       <param.screenshot />
-      <param.version />
       <param.output />
       <param.products.name />
       <param.products.id />
@@ -100,11 +99,10 @@ kill_hidden.tpl</param.exclude.filters>
       <file>${PROJECT_ROOT}</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>${PROJECT_ROOT}/+rico</file>
       <file>${PROJECT_ROOT}/LICENSE</file>
       <file>${PROJECT_ROOT}/README.md</file>
       <file>${PROJECT_ROOT}/docs</file>
-      <file>${PROJECT_ROOT}/phasor.m~</file>
+      <file>${PROJECT_ROOT}/rico</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />
