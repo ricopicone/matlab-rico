@@ -77,7 +77,10 @@ p5 = phasor('rec',x,y);
 p6 = 3*p5^2;
 p6.pol
 ```
-```
+
+This returns the following.
+
+```matlab
 [ 3*x^2 + 3*y^2, 2*atan2(y, x)]
 ```
 
