@@ -30,13 +30,13 @@ Click the file path `<toolbox path>` in the address bar, selecting it.
 
 ![copy-directory](images/copy-directory.png)
 
-Copy it. Paste it into the following command.
+Copy it. In the Command Window, paste it into the following command.
 
 ```matlab
 addpath(genpath(<toolbox path>))
 ```
 
-Then lock it in for the future.
+Still in the Command Window, lock it in for the future.
 
 ```matlab
 savepath
