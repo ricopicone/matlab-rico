@@ -26,14 +26,14 @@ Right-click on Toolbox `rico` and select `Open Folder`.
 
 ![open toolbox directory](images/open-toolbox-directory.png)
 
-Click the file path `<toolbar path>` in the address bar, selecting it. 
+Click the file path `<toolbox path>` in the address bar, selecting it. 
 
 ![copy-directory](images/copy-directory.png)
 
 Copy it. Paste it into the following command.
 
 ```matlab
-addpath(genpath(<toolbar path>))
+addpath(genpath(<toolbox path>))
 ```
 
 Then lock it in for the future.
