@@ -51,16 +51,27 @@ classdef phasor < handle
         end
         function c_rec = pol2rec(obj)
             c_rec1 = obj.pol(1)*cos(obj.pol(2)) + 1j*obj.pol(1)*sin(obj.pol(2));
-            c_rec = simplify(rewrite(c_rec1,'sqrt'));
+            c_rec2 = simplify(rewrite(sym(c_rec1),'sqrt'));
+            try % in case it's just a number
+                c_rec = double(c_rec2);
+            catch
+                c_rec = c_rec2;
+            end
         end
         function c_pol = rec2pol(obj)
-            c_pol =  rewrite( ...
+            rec_ex = sym(obj.rec);
+            c_pol1 =  rewrite( ...
                 simplify( ...
-                    [sqrt(real(obj.rec)^2 + imag(obj.rec)^2), ...
-                    atan2(imag(obj.rec),real(obj.rec))] ...
+                    [sqrt(real(rec_ex)^2 + imag(rec_ex)^2), ...
+                    atan2(imag(rec_ex),real(rec_ex))] ...
                 ), ...
                 'sqrt' ...
             );
+            try % in case it's just a number
+                c_pol = double(c_pol1);
+            catch
+                c_pol = c_pol1;
+            end
         end
         function out = plus(obj1,obj2)
             sum = phasor.simp_rec(obj1.rec + obj2.rec);
