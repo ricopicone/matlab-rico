@@ -18,7 +18,31 @@ Now you should have the `matlab-rico` library functions and classes available.
 
 ### Installing it as a Matlab Toolbox
 
-Download the [rico Toolbox file](https://github.com/ricopicone/matlab-rico/raw/master/rico.mltbx) and open it in Matlab (usually a double-click on the file will work). Sometimes I forget to update this file, so be warned that it may be out-of-date.
+Download the [rico Toolbox file](https://github.com/ricopicone/matlab-rico/raw/master/rico.mltbx) and open it in Matlab (usually a double-click on the file will work). Before it will work, you have to add the installation directory to your Matlab Path. First, open the menu `Home > Add-Ons > Manage Add-Ons`.
+
+![manage add-ons](images/manage-addons.png)
+
+Right-click on Toolbox `rico` and select `Open Folder`.
+
+![open toolbox directory](images/open-toolbox-directory.png)
+
+Click the file path `<toolbar path>` in the address bar, selecting it. 
+
+![copy-directory](images/copy-directory.png)
+
+Copy it. Paste it into the following command.
+
+```matlab
+addpath(genpath(<toolbar path>))
+```
+
+Then lock it in for the future.
+
+```matlab
+savepath
+```
+
+Sometimes I forget to update the Toolbox, so be warned that it may be out-of-date.
 
 ## Docs etc.
 
