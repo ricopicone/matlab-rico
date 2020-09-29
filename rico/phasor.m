@@ -106,7 +106,12 @@ classdef phasor < handle
                     error('phasor scalar multiplication supports reals only')
                 end
             end
-            pro = simplify(pro);
+            pro = simplify(sym(pro));
+            try % in case it's just a number
+                pro = double(pro);
+            catch
+                pro = pro;
+            end
             out = phasor('pol',pro(1),pro(2));
         end
         function out = times(obj1,obj2)
@@ -133,7 +138,12 @@ classdef phasor < handle
                     error('phasor scalar division supports reals only')
                 end
             end
-            pro = simplify(pro);
+            pro = simplify(sym(pro));
+            try % in case it's just a number
+                pro = double(pro);
+            catch
+                pro = pro;
+            end
             out = phasor('pol',pro(1),pro(2));
         end
         function out = rdivide(obj1,obj2)
@@ -150,7 +160,7 @@ classdef phasor < handle
     end
     methods(Static)
         function phasor_ex = sym2phasor(sym_ex,subs_struc)
-            sym_str = string(simplify(sym_ex));
+            sym_str = string(simplify(sym(sym_ex)));
             names = fieldnames(subs_struc);
             for i=1:length(names)
                 eval([names{i} '=subs_struc.' names{i} ';']);
@@ -159,7 +169,12 @@ classdef phasor < handle
         end
         function out = simp_rec(rec_ex)
             % simplify rectangular forms ... avoids abs
-            out = simplify(rewrite(rec_ex,'sqrt'));
+            out = simplify(rewrite(sym(rec_ex),'sqrt'));
+            try % in case it's just a number
+                out = double(out);
+            catch
+                out = out;
+            end
         end
     end
 end
