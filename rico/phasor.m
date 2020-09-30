@@ -51,7 +51,7 @@ classdef phasor < handle
         end
         function c_rec = pol2rec(obj)
             c_rec1 = obj.pol(1)*cos(obj.pol(2)) + 1j*obj.pol(1)*sin(obj.pol(2));
-            c_rec2 = simplify(rewrite(sym(c_rec1),'sqrt'));
+            c_rec2 = phasor.simp_rec(c_rec1);
             try % in case it's just a number
                 c_rec = double(c_rec2);
             catch
@@ -59,13 +59,10 @@ classdef phasor < handle
             end
         end
         function c_pol = rec2pol(obj)
-            rec_ex = sym(obj.rec);
-            c_pol1 =  rewrite( ...
-                simplify( ...
-                    [sqrt(real(rec_ex)^2 + imag(rec_ex)^2), ...
-                    atan2(imag(rec_ex),real(rec_ex))] ...
-                ), ...
-                'sqrt' ...
+            rec_ex = obj.rec;
+            c_pol1 =  phasor.simp_rec( ...
+                [sqrt(real(rec_ex)^2 + imag(rec_ex)^2), ...
+                atan2(imag(rec_ex),real(rec_ex))] ...
             );
             try % in case it's just a number
                 c_pol = double(c_pol1);
@@ -78,7 +75,7 @@ classdef phasor < handle
             out = phasor('rec',real(sum),imag(sum));
         end
         function out = minus(obj1,obj2)
-            sum = simp_rec(obj1.rec - obj2.rec);
+            sum = phasor.simp_rec(obj1.rec - obj2.rec);
             out = phasor('rec',real(sum),imag(sum));
         end
         function out = uminus(obj1)
@@ -106,7 +103,7 @@ classdef phasor < handle
                     error('phasor scalar multiplication supports reals only')
                 end
             end
-            pro = simplify(sym(pro));
+            pro = phasor.simp_rec(pro);
             try % in case it's just a number
                 pro = double(pro);
             catch
@@ -138,7 +135,7 @@ classdef phasor < handle
                     error('phasor scalar division supports reals only')
                 end
             end
-            pro = simplify(sym(pro));
+            pro = phasor.simp_rec(pro);
             try % in case it's just a number
                 pro = double(pro);
             catch
@@ -166,15 +163,27 @@ classdef phasor < handle
                 eval([names{i} '=subs_struc.' names{i} ';']);
             end
             phasor_ex = eval(sym_str);
+            phasor_ex = phasor.simplify_rec(phasor_ex);
         end
         function out = simp_rec(rec_ex)
             % simplify rectangular forms ... avoids abs
+            % NOTE FOR PHASORS
             out = simplify(rewrite(sym(rec_ex),'sqrt'));
             try % in case it's just a number
                 out = double(out);
             catch
                 out = out;
             end
+        end
+        function out = simplify_rec(my_phasor)
+            % simplifies a phasor rec (and therefore pol) 
+            sim = phasor.simp_rec(my_phasor.rec);
+            out = phasor('rec',real(sim),imag(sim));
+        end
+        function out = simplify_pol(my_phasor)
+            % simplifies a phasor pol (and therefore rec) 
+            sim = phasor.simp_rec(my_phasor.pol);
+            out = phasor('pol',sim(1),sim(2));
         end
     end
 end

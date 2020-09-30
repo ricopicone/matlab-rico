@@ -7,7 +7,7 @@
     <param.summary>A collection of classes and functions to be paired with my courses.</param.summary>
     <param.description>This toolbox contains mostly transfer function functions and a class for doing phasor analysis.</param.description>
     <param.screenshot />
-    <param.version>0.2</param.version>
+    <param.version>0.3</param.version>
     <param.output>${PROJECT_ROOT}/rico.mltbx</param.output>
     <param.products.name />
     <param.products.id />
