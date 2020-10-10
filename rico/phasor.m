@@ -158,9 +158,16 @@ classdef phasor < handle
     methods(Static)
         function phasor_ex = sym2phasor(sym_ex,subs_struc)
             sym_str = string(simplify(sym(sym_ex)));
+            syms_all = symvar(sym(sym_ex));
             names = fieldnames(subs_struc);
-            for i=1:length(names)
-                eval([names{i} '=subs_struc.' names{i} ';']);
+            for i=1:length(syms_all)
+                if ismember(syms_all(i),names)
+                    eval([char(syms_all(i)) '=subs_struc.' char(syms_all(i)) ';']);
+                else
+                    warning(['variable ' char(syms_all(i)) ' has been assumed to be real.'])
+                    eval(['syms ' char(syms_all(i)) ' real']);
+                    eval([char(syms_all(i)) '=phasor("rec",' char(syms_all(i)) ',0);']);
+                end
             end
             phasor_ex = eval(sym_str);
             phasor_ex = phasor.simplify_pol(phasor_ex);
